@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# Loop through projects 1 to 10
-for i in {1..2}; do
+# Loop through projects 1 to 10 (replace 10 with your actual number of projects)
+for i in {1..10}; do
   PROJECT_ID="ai-cto-$i"  # Replace with your actual project ID format
 
   # Check if the project ID is valid (optional but recommended)

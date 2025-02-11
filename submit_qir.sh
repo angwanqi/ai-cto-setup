@@ -4,7 +4,7 @@
 REGIONS=("us-central1" "europe-west4" "asia-southeast1") # Add more regions as needed
 
 # Loop through projects 1 to 2 (as you specified)
-for i in {1..2}; do
+for i in {1..1}; do
   PROJECT_ID="ai-cto-$i"
 
   # Check if the project ID is valid (optional but recommended)
