@@ -17,8 +17,8 @@
 
 REGIONS=("us-central1" "europe-west4" "asia-southeast1")
 
-# Loop through projects (1 to 10)
-for i in {1..2}; do
+# Loop through projects (1 to X)
+for i in {1..1}; do
   PROJECT_ID="ai-cto-$i"  # Your project ID naming pattern. Adjust as needed!
   BILLING_PROJECT_ID="$PROJECT_ID" # Or your separate billing project ID
 
