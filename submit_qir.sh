@@ -21,7 +21,7 @@ for i in {1..1}; do
     echo "Requesting quota increase for project: $PROJECT_ID, region: $REGION, quota: $QUOTA_ID"
 
     SERVICE_NAME="aiplatform.googleapis.com"
-    PREFERRED_VALUE=1
+    PREFERRED_VALUE=6
     DIMENSIONS="region=$REGION"
     JUSTIFICATION="Requesting A100 80GB GPU quota for OSS LLM test."
     EMAIL="<UPDATE_EMAIL>"
