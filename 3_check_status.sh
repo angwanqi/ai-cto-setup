@@ -17,14 +17,14 @@
 REGIONS=("us-central1" "europe-west4" "asia-southeast1")
 
 # Loop through projects (1 to X)
+# TODO: Replace the next line with number of projects - e.g. 10 projects -> for i in {1..10}; do
 for i in {1..1}; do
-  PROJECT_ID="ai-cto-$i"  # Your project ID naming pattern. Adjust as needed!
+  PROJECT_ID="ai-cto-$i"  # TODO: Modify according to your project naming pattern
   BILLING_PROJECT_ID="$PROJECT_ID" # Or your separate billing project ID
 
-  echo "Processing project: $PROJECT_ID"
-
-  # Construct the resource name dynamically
   for REGION in "${REGIONS[@]}"; do
+
+    echo "Processing project: $PROJECT_ID for $REGION."
 
     # PREFERENCE_ID for Serving
     PREFERENCE_ID="a100-80gb-serving-${PROJECT_ID}-${REGION}"
@@ -46,16 +46,8 @@ for i in {1..1}; do
       match="false"
     fi
 
-    # # Print the extracted values
-    # echo "region: $region"
-    # echo "name: $name"
-    # echo "granted_value: $granted_value"
-    # echo "preferred_value: $preferred_value"
-    # echo "quota_id: $quota_id"
-    # echo "trace_id: $trace_id"
-
     # Set the output CSV file name
-    csv_file="status.csv"
+    csv_file="vertex_qir_status.csv"
 
     # Check if the CSV file exists. If not, create it with headers
     if [ ! -f "$csv_file" ]; then
@@ -66,7 +58,7 @@ for i in {1..1}; do
     echo "$PROJECT_ID,$quota_id,$region,$trace_id,$preferred_value,$granted_value,$match,$name" >> "$csv_file"
 
     echo "Data appended to $csv_file - ${PROJECT_ID} ${REGION} ${quota_id} "
-    echo "--------------------" # Separator for clarity
+    echo "--------------------"
 
     # PREFERENCE_ID for Training
     PREFERENCE_ID="a100-80gb-training-${PROJECT_ID}-${REGION}"

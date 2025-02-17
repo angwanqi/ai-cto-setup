@@ -18,9 +18,10 @@
 REGIONS=("us-central1" "europe-west4" "asia-southeast1")
 
 # Loop through projects (1 to X)
+# TODO: Replace the next line with number of projects - e.g. 10 projects -> for i in {1..10}; do
 for i in {1..1}; do
-  PROJECT_ID="ai-cto-$i"  # Your project ID naming pattern. Adjust as needed!
-  BILLING_PROJECT_ID="$PROJECT_ID" # Or your separate billing project ID
+  PROJECT_ID="ai-cto-$i"  # TODO: Modify according to your project naming pattern
+  BILLING_PROJECT_ID="$PROJECT_ID"
 
   echo "Processing project: $PROJECT_ID"
 
@@ -39,15 +40,8 @@ for i in {1..1}; do
     quota_id=$(jq -r '.quotaId' <<< "$output")
     trace_id=$(jq -r '.quotaConfig.traceId' <<< "$output")
 
-    # # Print the extracted values
-    # echo "region: $region"
-    # echo "name: $name"
-    # echo "preferred_value: $preferred_value"
-    # echo "quota_id: $quota_id"
-    # echo "trace_id: $trace_id"
-
     # Set the output CSV file name
-    csv_file="all_quota_data.csv"
+    csv_file="vertex_quota_traceids.csv"
 
     # Check if the CSV file exists. If not, create it with headers
     if [ ! -f "$csv_file" ]; then
