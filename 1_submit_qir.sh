@@ -3,10 +3,10 @@
 # Define the regions you want to loop through
 REGIONS=("us-central1" "europe-west4" "asia-southeast1") # Add more regions as needed
 
-# Loop through projects (1 to X)
-# TODO: Replace the next line with number of projects - e.g. 10 projects -> for i in {1..10}; do
-for i in {1..1}; do
-  PROJECT_ID="ai-cto-$i" # TODO: Modify according to your project naming pattern
+# Loop through all projects
+# TODO: Ensure that you have filled up projects.txt with all your project IDs
+for proj in $(cat projects.txt); do
+  PROJECT_ID="$proj"
 
   # Check if the project ID is valid (optional but recommended)
   if [[ ! "$PROJECT_ID" =~ ^[a-z][a-z0-9-]*[a-z0-9]$ ]]; then
@@ -46,11 +46,12 @@ for i in {1..1}; do
       echo "Quota preference request submitted successfully for project: $PROJECT_ID, region: $REGION, quota: $QUOTA_ID"
     elif [[ "$output" == *"PERMISSION_DENIED"* ]]; then
       echo "Error: Permission denied while requesting quota preference for project $PROJECT_ID, region $REGION, quota: $QUOTA_ID. Ensure you have the 'Cloud Quotas Admin' role."
+      echo "Full error message: $output"
     else
       echo "Error requesting quota preference for project: $PROJECT_ID, region: $REGION: $output, quota: $QUOTA_ID"
     fi
 
-    echo "--------------------"
+    echo ""
 
     # REQUEST FOR VERTEX TRAINING
     QUOTA_ID="CustomModelTrainingA10080GBGPUsPerProjectPerRegion"
@@ -76,6 +77,7 @@ for i in {1..1}; do
       echo "Quota preference request submitted successfully for project: $PROJECT_ID, region: $REGION, quota: $QUOTA_ID"
     elif [[ "$output" == *"PERMISSION_DENIED"* ]]; then
       echo "Error: Permission denied while requesting quota preference for project $PROJECT_ID, region $REGION, quota: $QUOTA_ID. Ensure you have the 'Compute Quota Admin' role."
+      echo "Full error message: $output"
     else
       echo "Error requesting quota preference for project: $PROJECT_ID, region: $REGION, quota: $QUOTA_ID: $output"
     fi

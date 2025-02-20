@@ -17,10 +17,10 @@
 
 REGIONS=("us-central1" "europe-west4" "asia-southeast1")
 
-# Loop through projects (1 to X)
-# TODO: Replace the next line with number of projects - e.g. 10 projects -> for i in {1..10}; do
-for i in {1..1}; do
-  PROJECT_ID="ai-cto-$i"  # TODO: Modify according to your project naming pattern
+# Loop through all projects
+# TODO: Ensure that you have filled up projects.txt with all your project IDs
+for proj in $(cat projects.txt); do
+  PROJECT_ID="$proj"
   BILLING_PROJECT_ID="$PROJECT_ID"
 
   echo "Processing project: $PROJECT_ID"
@@ -52,7 +52,7 @@ for i in {1..1}; do
     echo "$PROJECT_ID,$quota_id,$region,$trace_id,$preferred_value,$name" >> "$csv_file"
 
     echo "Data appended to $csv_file - ${PROJECT_ID} ${REGION} ${quota_id} "
-    echo "--------------------" # Separator for clarity
+    echo "" # Separator for clarity
 
     # PREFERENCE_ID for Training
     PREFERENCE_ID="a100-80gb-training-${PROJECT_ID}-${REGION}"
