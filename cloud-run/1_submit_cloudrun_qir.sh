@@ -25,7 +25,7 @@ for proj in $(cat ../projects.txt); do
     PREFERRED_VALUE=4
     DIMENSIONS="region=$REGION"
     JUSTIFICATION="Requesting for OSS LLM test."
-    EMAIL="bruce@wqang.altostrat.com"
+    EMAIL="<UPDATE_EMAIL>"
     PREFERENCE_ID="cloudrun-l4-$PROJECT_ID-$REGION"
 
     output=$(gcloud beta quotas preferences create \
