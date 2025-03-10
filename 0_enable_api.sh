@@ -43,6 +43,22 @@ for proj in $(cat projects.txt); do
     echo "Error enabling Cloud Quotas API for project: $PROJECT_ID: $output"
   fi
 
+  # ENABLE CLOUD RUN API
+  echo "Enabling Cloud Run API for project: $PROJECT_ID"
+
+  # Attempt to activate the service.  Capture output and exit code
+  output=$(gcloud services enable run.googleapis.com --project="$PROJECT_ID" 2>&1)
+  exit_code=$?
+
+  # Check the result
+  if [[ $exit_code -eq 0 ]]; then
+    echo "Cloud Run API enabled successfully for project: $PROJECT_ID"
+  elif [[ "$output" == *"PERMISSION_DENIED"* ]]; then  # Check for permissions issue
+      echo "Error: Permission denied while enabling API for project $PROJECT_ID: $output"
+  else
+    echo "Error enabling Cloud Run API for project: $PROJECT_ID: $output"
+  fi
+
   echo "--------------------" # Separator between projects
 
 done
