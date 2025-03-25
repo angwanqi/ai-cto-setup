@@ -48,7 +48,7 @@ for proj in $(cat ../projects.txt); do
     # echo "trace_id: $trace_id"
 
     # Set the output CSV file name
-    csv_file="cloudrun_quota_data.csv"
+    csv_file="cloudrun_quota_traceids.csv"
 
     # Check if the CSV file exists. If not, create it with headers
     if [ ! -f "$csv_file" ]; then
