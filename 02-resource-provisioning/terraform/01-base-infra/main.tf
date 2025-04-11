@@ -57,5 +57,40 @@ module "tenant" {
       subnet_region         = "us-central1"
       subnet_private_access = "true"
     },
-  ]
+    {
+      subnet_name           = "asia-northeast3"
+      subnet_ip             = "10.13.0.0/16"
+      subnet_region         = "asia-northeast3"
+      subnet_private_access = "true"
+    },
+    {
+      subnet_name           = "asia-south1"
+      subnet_ip             = "10.14.0.0/16"
+      subnet_region         = "asia-south1"
+      subnet_private_access = "true"
+    },
+    {
+      subnet_name           = "europe-west2"
+      subnet_ip             = "10.15.0.0/16"
+      subnet_region         = "europe-west2"
+      subnet_private_access = "true"
+    },
+    {
+      subnet_name           = "us-east1"
+      subnet_ip             = "10.16.0.0/16"
+      subnet_region         = "us-east1"
+      subnet_private_access = "true"
+    },
+    {
+      subnet_name           = "us-east4"
+      subnet_ip             = "10.17.0.0/16"
+      subnet_region         = "us-east4"
+      subnet_private_access = "true"
+    },
+    {
+      subnet_name           = "us-west1"
+      subnet_ip             = "10.18.0.0/16"
+      subnet_region         = "us-west1"
+      subnet_private_access = "true"
+  }, ]
 }
