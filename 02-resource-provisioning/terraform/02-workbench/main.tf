@@ -18,10 +18,6 @@ locals {
   project_users   = data.terraform_remote_state.base_infra.outputs.project_users
 
   lab_services = [
-    "bigquery.googleapis.com",
-    "bigquerydatatransfer.googleapis.com",
-    "bigqueryreservation.googleapis.com",
-    "bigquerystorage.googleapis.com",
   ]
 }
 
@@ -41,33 +37,15 @@ resource "google_project_service" "lab_services" {
   disable_on_destroy         = false
 }
 
-# TODO: break this out, and distribute between us-centra1 and us-multiregion use variable for region
-# BQ reservations
-resource "google_bigquery_reservation" "reservation" {
-  name     = "${local.resource_prefix}-bq-reservation"
-  location = local.region
-  project  = local.project_id
-
-  // Set to 0 for testing purposes
-  // In reality this would be larger than zero
-  slot_capacity     = 100
-  edition           = "ENTERPRISE"
-  ignore_idle_slots = true
-  concurrency       = 0
-  autoscale {
-    max_slots = 100
-  }
-}
-
 # create vertex AI workbench instance
 resource "google_workbench_instance" "default" {
   count = 3
 
-  name     = "${local.resource_prefix}-workbench-${count.index}"
+  name     = "${local.resource_prefix}-workbench-${count.index + 1}"
   location = "${local.region}-${local.random_zone_list[count.index]}"
   project  = local.project_id
 
-  instance_owners = local.project_users
+  instance_owners = [ tolist(local.project_users)[count.index] ]
 
   gce_setup {
     machine_type      = "e2-standard-8"
