@@ -20,3 +20,10 @@ variable "project_users" {
   description = "A set of usernames to be granted the project roles"
   default     = [] # Set an empty set as default
 }
+
+## lab specific variables
+variable "bq_region" {
+  type        = string
+  description = "BigQuery slot region"
+  default     = "us-central" # Please use values: "us-centra11" or "us"
+}

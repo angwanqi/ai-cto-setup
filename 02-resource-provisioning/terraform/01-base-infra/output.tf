@@ -48,3 +48,8 @@ output "random_zone_list" {
   description = "random zone list"
 }
 
+## Project specific outputs
+output "bq_region" {
+  value       = var.bq_region
+  description = "bq_region"
+}

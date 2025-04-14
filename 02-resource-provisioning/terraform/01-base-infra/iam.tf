@@ -16,7 +16,7 @@ resource "google_project_iam_custom_role" "lab_users" {
   title   = "lab_user"
   permissions = [
     "compute.disks.get"
-    ]
+  ]
 }
 
 # bind custom lab_users role to users

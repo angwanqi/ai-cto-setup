@@ -8,6 +8,7 @@ data "terraform_remote_state" "base_infra" {
 
 locals {
   project_id = data.terraform_remote_state.base_infra.outputs.project_id
+  bq_region  = data.terraform_remote_state.base_infra.outputs.bq_region
   region     = data.terraform_remote_state.base_infra.outputs.region
   vpc_id     = data.terraform_remote_state.base_infra.outputs.vpc_id
 
@@ -45,7 +46,7 @@ resource "google_project_service" "lab_services" {
 # BQ reservations
 resource "google_bigquery_reservation" "reservation" {
   name     = "${local.resource_prefix}-bq-reservation"
-  location = local.region
+  location = local.bq_region
   project  = local.project_id
 
   // Set to 0 for testing purposes
@@ -57,4 +58,13 @@ resource "google_bigquery_reservation" "reservation" {
   autoscale {
     max_slots = 100
   }
+}
+
+# assignment
+resource "google_bigquery_reservation_assignment" "default" {
+  project     = local.project_id
+  
+  assignee    = "projects/${local.project_id}"
+  job_type    = "QUERY"
+  reservation = google_bigquery_reservation.reservation.id
 }
