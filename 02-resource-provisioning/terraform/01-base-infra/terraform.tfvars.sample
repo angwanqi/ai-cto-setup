@@ -9,3 +9,6 @@ region = "<DEFAULT_REGION : eg. asia-southeast1>"
 
 # BiqQuery reservations region
 bq_region = ""   # possible values are "us-central1" and "us"
+
+# AlloyDB password
+alloydb_initial_password = "" # set an initial password for alloydb

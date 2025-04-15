@@ -21,9 +21,29 @@ variable "project_users" {
   default     = [] # Set an empty set as default
 }
 
-## lab specific variables
+## lab specific variables ########################################################################
+
+# BigQuery ######
 variable "bq_region" {
   type        = string
   description = "BigQuery slot region"
   default     = "us-central" # Please use values: "us-centra11" or "us"
+}
+
+# AlloyDB #######
+variable "alloydb_psa_subnet" {
+  type        = string
+  description = "AlloyDB private service access subnet base IP address"
+  default     = "10.7.128.0/20"
+}
+
+variable "alloydb_initial_user" {
+  type        = string
+  description = "AlloyDB initial user"
+  default     = "postgres"
+}
+
+variable "alloydb_initial_password" {
+  type        = string
+  description = "AlloyDB initial password"
 }
