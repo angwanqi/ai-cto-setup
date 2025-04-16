@@ -18,7 +18,7 @@ for proj in $(cat ../projects.txt); do
   for REGION in "${REGIONS[@]}"; do
 
     # REQUEST FOR VERTEX SERVING 
-    QUOTA_ID="NvidiaL4GpuAllocPerProjectRegion"
+    QUOTA_ID="NvidiaL4GpuAllocNoZonalRedundancyPerProjectRegion"
     echo "Requesting Cloud Run L4 GPU Quota for project: $PROJECT_ID, region: $REGION, quota: $QUOTA_ID"
 
     SERVICE_NAME="run.googleapis.com"
