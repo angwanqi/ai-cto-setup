@@ -51,9 +51,6 @@ resource "google_project_service" "lab_services" {
   disable_on_destroy         = false
 }
 
-
-##  TODO: decouple region from 01
-
 # Vertex AI persistent resource via gcloud cli
 module "cli" {
   source  = "terraform-google-modules/gcloud/google"

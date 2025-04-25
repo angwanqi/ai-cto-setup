@@ -94,8 +94,6 @@ resource "google_compute_network_peering_routes_config" "alloydb_peering_routes"
   export_custom_routes = true
 }
 
-## TODO: 3 clusters + read replica
-
 # create alloydb cluster
 resource "google_alloydb_cluster" "alloydb_cluster" {
   count = 3
@@ -220,7 +218,7 @@ resource "google_compute_firewall" "alloydb_allow_internal" {
   direction = "EGRESS"
 }
 
-# Allow project users to access AlloyDB instance
+# Allow project users to access AlloyDB instance using IAM credentials
 resource "google_alloydb_user" "alloydb_user" {
   count = 3
 
