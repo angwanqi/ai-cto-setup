@@ -42,7 +42,6 @@ resource "google_project_service" "lab_services" {
   disable_on_destroy         = false
 }
 
-# TODO: break this out, and distribute between us-centra1 and us-multiregion use variable for region
 # BQ reservations
 resource "google_bigquery_reservation" "reservation" {
   name     = "${local.resource_prefix}-bq-reservation"

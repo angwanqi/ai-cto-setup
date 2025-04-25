@@ -48,8 +48,32 @@ output "random_zone_list" {
   description = "random zone list"
 }
 
-## Project specific outputs
+## Project specific outputs #########################################
+
+# BigQuery ######
 output "bq_region" {
   value       = var.bq_region
   description = "bq_region"
+}
+
+# Vertex AI #####
+output "vertex_ai_region" {
+  value       = var.vertex_ai_region
+  description = "vertex_ai_region"
+}
+
+# AlloyDB #######
+output "alloydb_psa_subnet" {
+  value       = var.alloydb_psa_subnet
+  description = "alloydb_psa_subnet"
+}
+
+output "alloydb_initial_user" {
+  value       = var.alloydb_initial_user
+  description = "alloydb_initial_user"
+}
+
+output "alloydb_initial_password" {
+  value       = var.alloydb_initial_password
+  description = "alloydb_initial_password"
 }

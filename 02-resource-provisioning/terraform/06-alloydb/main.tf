@@ -21,6 +21,10 @@ locals {
   resource_prefix = data.terraform_remote_state.base_infra.outputs.resource_prefix
   project_users   = data.terraform_remote_state.base_infra.outputs.project_users
 
+  alloydb_psa_subnet       = data.terraform_remote_state.base_infra.outputs.alloydb_psa_subnet
+  alloydb_initial_user     = data.terraform_remote_state.base_infra.outputs.alloydb_initial_user
+  alloydb_initial_password = data.terraform_remote_state.base_infra.outputs.alloydb_initial_password
+
   lab_services = [
     "alloydb.googleapis.com",
     "cloudresourcemanager.googleapis.com",
@@ -65,8 +69,8 @@ resource "google_compute_global_address" "alloydb_private_range" {
   purpose      = "VPC_PEERING"
 
   network       = local.vpc_network_name
-  address       = split("/", var.alloydb_psa_subnet)[0]
-  prefix_length = split("/", var.alloydb_psa_subnet)[1]
+  address       = split("/", local.alloydb_psa_subnet)[0]
+  prefix_length = split("/", local.alloydb_psa_subnet)[1]
 
   depends_on = [google_project_service.lab_services]
 }
@@ -94,14 +98,16 @@ resource "google_compute_network_peering_routes_config" "alloydb_peering_routes"
 
 # create alloydb cluster
 resource "google_alloydb_cluster" "alloydb_cluster" {
+  count = 3
+
   provider   = google-beta # alloydb_cluster requires the beta provider
   project    = local.project_id
   location   = local.region
-  cluster_id = "${local.resource_prefix}-alloydb-cluster"
+  cluster_id = "${local.resource_prefix}-alloydb-cluster-${count.index + 1}"
 
   initial_user {
-    user     = var.alloydb_initial_user
-    password = var.alloydb_initial_password
+    user     = local.alloydb_initial_user
+    password = local.alloydb_initial_password
   }
 
   network_config {
@@ -137,9 +143,11 @@ resource "google_alloydb_cluster" "alloydb_cluster" {
 
 # Create alloydb instance
 resource "google_alloydb_instance" "alloydb_instance" {
+  count = 3
+
   provider    = google-beta
-  cluster     = google_alloydb_cluster.alloydb_cluster.name
-  instance_id = "${local.resource_prefix}-alloydb-cluster-primary" # Replace with your desired instance ID
+  cluster     = google_alloydb_cluster.alloydb_cluster[count.index].name
+  instance_id = "${local.resource_prefix}-alloydb-cluster-primary-${count.index + 1}" # Replace with your desired instance ID
 
   instance_type     = "PRIMARY" # Other types are: READ_POOL
   availability_type = "ZONAL"   # Available options: REGIONAL, ZONAL
@@ -169,6 +177,32 @@ resource "google_alloydb_instance" "alloydb_instance" {
   ]
 }
 
+# Create alloydb instance read pool
+resource "google_alloydb_instance" "alloydb_readpool" {
+  count = 3
+
+  provider    = google-beta
+  cluster     = google_alloydb_cluster.alloydb_cluster[count.index].name
+  instance_id = "${local.resource_prefix}-alloydb-cluster-readpool-${count.index + 1}" # Replace with your desired instance ID
+
+  instance_type     = "READ_POOL" # Other types are: READ_POOL
+  availability_type = "ZONAL"     # Available options: REGIONAL, ZONAL
+
+  read_pool_config {
+    node_count = 1
+  }
+
+  machine_config {
+    cpu_count = 4 # min 2 CPU TODO: 8 vCPU
+  }
+
+  depends_on = [
+    google_service_networking_connection.alloydb_vpc_connection,
+    google_alloydb_instance.alloydb_instance
+  ]
+}
+
+
 # Allow traffic to AlloyDB instances from within the VPC
 resource "google_compute_firewall" "alloydb_allow_internal" {
   name    = "${local.resource_prefix}-alloydb-allow-internal-rule"
@@ -188,10 +222,10 @@ resource "google_compute_firewall" "alloydb_allow_internal" {
 
 # Allow project users to access AlloyDB instance
 resource "google_alloydb_user" "alloydb_user" {
-  for_each = toset(local.project_users)
+  count = 3
 
-  cluster   = google_alloydb_cluster.alloydb_cluster.name
-  user_id   = each.key
+  cluster   = google_alloydb_cluster.alloydb_cluster[count.index].name
+  user_id   = tolist(local.project_users)[count.index]
   user_type = "ALLOYDB_IAM_USER"
 
   database_roles = ["alloydbsuperuser"]
