@@ -30,6 +30,13 @@ variable "bq_region" {
   default     = "us-central" # Please use values: "us-centra11" or "us"
 }
 
+# Vertex AI #####
+variable "vertex_ai_region" {
+  type        = string
+  description = "Vertex AI region"
+  default     = "us-central1"
+}
+
 # AlloyDB #######
 variable "alloydb_psa_subnet" {
   type        = string

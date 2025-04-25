@@ -17,6 +17,8 @@ locals {
   resource_prefix = data.terraform_remote_state.base_infra.outputs.resource_prefix
   project_users   = data.terraform_remote_state.base_infra.outputs.project_users
 
+  vertex_ai_region = data.terraform_remote_state.base_infra.outputs.vertex_ai_region
+
   lab_services = [
     "notebooks.googleapis.com",
     "cloudresourcemanager.googleapis.com",
@@ -60,8 +62,8 @@ module "cli" {
   platform = "linux"
 
   create_cmd_entrypoint = "${path.module}/scripts/persistent-resource.sh"
-  create_cmd_body       = "create ${local.project_id} ${local.region} ${local.resource_prefix}"
+  create_cmd_body       = "create ${local.project_id} ${local.vertex_ai_region} ${local.resource_prefix}"
 
   destroy_cmd_entrypoint = "${path.module}/scripts/persistent-resource.sh"
-  destroy_cmd_body       = "delete ${local.project_id} ${local.region} ${local.resource_prefix}"
+  destroy_cmd_body       = "delete ${local.project_id} ${local.vertex_ai_region} ${local.resource_prefix}"
 }

@@ -56,6 +56,12 @@ output "bq_region" {
   description = "bq_region"
 }
 
+# Vertex AI #####
+output "vertex_ai_region" {
+  value       = var.vertex_ai_region
+  description = "vertex_ai_region"
+}
+
 # AlloyDB #######
 output "alloydb_psa_subnet" {
   value       = var.alloydb_psa_subnet
