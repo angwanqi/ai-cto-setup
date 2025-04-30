@@ -67,3 +67,11 @@ resource "google_project_iam_binding" "compute_engine_required_roles" {
     "serviceAccount:${data.google_compute_default_service_account.default.email}",
   ]
 }
+
+# 
+resource "google_service_account_iam_binding" "admin-account-iam" {
+  service_account_id = data.google_compute_default_service_account.default.name
+  role               = "roles/iam.serviceAccountUser"
+
+  members = local.user_list
+}
