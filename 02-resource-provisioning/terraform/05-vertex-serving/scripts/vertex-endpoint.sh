@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 # this script requires `gcloud` and `jq` to be present
 [ -x "gcloud" ] && echo "Command 'gcloud' not found" >&2 && exit 1
@@ -28,7 +28,7 @@ create_resource() {
 
 delete_resource() {
     echo ${resource_id}
-    endpoint_json=$(gcloud beta ai endpoints list --list-model-garden-endpoints-only --region=${region} --project=${project_id} --format=json | jq --arg RESOURCE_ID "$resource_id"  -r '.[] | select(.displayName | contains($RESOURCE_ID))' )
+    endpoint_json=$(gcloud beta ai endpoints list --list-model-garden-endpoints-only --region=${region} --project=${project_id} --format=json | jq --arg RESOURCE_ID "$resource_id" -r '.[] | select(.displayName | contains($RESOURCE_ID))')
     model_id=$(echo ${endpoint_json} | jq -r '.deployedModels[0].id')
     endpoint=$(echo ${endpoint_json} | jq -r '.name')
 
@@ -41,16 +41,16 @@ delete_resource() {
         gcloud ai endpoints delete ${endpoint} --quiet)
 }
 
-
 command=$1
 project_id=$2
 region=$3
 resource_id=$4
 
-
 case "${command}" in
-    create)
-        create_resource;;
-    *)
-        delete_resource;;
+create)
+    create_resource
+    ;;
+*)
+    delete_resource
+    ;;
 esac
