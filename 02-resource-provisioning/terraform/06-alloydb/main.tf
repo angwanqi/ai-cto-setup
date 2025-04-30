@@ -45,6 +45,10 @@ provider "google-beta" {
   region  = local.region
 }
 
+data "google_project" "project" {
+  project_id = local.project_id
+}
+
 # enable APIs
 resource "google_project_service" "lab_services" {
   for_each = toset(local.lab_services)
@@ -122,6 +126,9 @@ resource "google_alloydb_cluster" "alloydb_cluster" {
     backup_window = "3600s"
     enabled       = false
 
+    time_based_retention {
+      retention_period = "1209600s"
+    }
     weekly_schedule {
       days_of_week = ["MONDAY"]
 
@@ -161,9 +168,11 @@ resource "google_alloydb_instance" "alloydb_instance" {
   #   "password.min_pass_length"                            = "10"
   # }
 
-  # network_config {
-  #   enable_public_ip = true
-  # }
+  network_config {
+    enable_outbound_public_ip = false
+    enable_public_ip          = false
+  }
+
 
 
   machine_config {
@@ -228,4 +237,13 @@ resource "google_alloydb_user" "alloydb_user" {
 
   database_roles = ["alloydbsuperuser"]
   depends_on     = [google_alloydb_instance.alloydb_instance]
+}
+
+# bind roles/aiplatoform.user to alloydb service account
+resource "google_project_iam_binding" "alloydb_service_account" {
+  project = local.project_id
+  role    = "roles/aiplatform.user"
+  members = [
+    "serviceAccount:service-${data.google_project.project.number}@gcp-sa-alloydb.iam.gserviceaccount.com",
+  ]
 }
