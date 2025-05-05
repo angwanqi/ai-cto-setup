@@ -1,75 +1,50 @@
 # Cloud AI Takeoff - Base Infrastructure
 
-This directory (`01-base-infra`) contains the Terraform configuration for setting up the foundational infrastructure for the Cloud AI Takeoff project. It handles the creation of a base Google Cloud project, VPC network, subnets, and essential service enablement.
+# 01-base-infra
 
-## Overview
+This folder contains the Terraform configuration for setting up the base infrastructure for the AI platform.
 
-The Terraform code in this directory performs the following actions:
+## Files
 
-*   **Project Setup:** Configures a Google Cloud project with the specified ID.
-*   **VPC Network:** Creates a Virtual Private Cloud (VPC) network.
-*   **Subnets:** Defines and creates subnets within the VPC across multiple regions.
-*   **Service Enablement:** Enables a set of core Google Cloud services required for AI/ML workloads.
-*   **IAM Bindings:** Grants project owner roles to specified users.
-* **Random Region and Zone Selection:** Randomly selects a region and zone for resource deployment.
+- `iam.tf`: This file defines the IAM roles and bindings for the project, including custom roles for lab users and bindings for the default compute service account.
+- `main.tf`: This file orchestrates the creation of the core infrastructure components by calling the `tenant` module and defining random resources for region and zone selection.
+- `output.tf`: This file defines the output variables that will be displayed after the Terraform configuration is applied, providing information about the created resources.
+- `providers.tf`: This file configures the Google Cloud provider and specifies the required provider versions.
+- `variables.tf`: This file defines the input variables for the Terraform configuration, including project ID, region, resource prefix, and user list.
 
-## File Structure
+## Variables
 
-*   **`providers.tf`:** Defines the Google and Google Beta providers, specifying the required versions and project/region settings.
-*   **`main.tf`:** Contains the core resource definitions, including:
-    *   Random region and zone selection.
-    *   The `tenant` module, which handles VPC network, subnet, and service enablement.
-*   **`output.tf`:** Defines output variables that expose important information about the created resources, such as project ID, VPC ID, subnet IPs, and random region/zone.
-*   **`iam.tf`:** Defines IAM bindings to grant project owner roles to specified users.
-* **`modules/tenant`:** This directory (not shown in the provided files, but referenced in `main.tf`) contains the module that creates the VPC, subnets, and enables services.
+The following variables can be configured in the `terraform.tfvars` file or passed as command-line arguments:
 
-## Key Components
+- `project_id`: The ID of the Google Cloud project.
+- `region`: The region for the Google Cloud project resources (default: `asia-southeast1`).
+- `resource_prefix`: The prefix for shared resources (default: `ai-takeoff`).
+- `project_users`: A set of usernames to be granted project roles (default: `[]`).
+- `bq_region`: BigQuery slot region (default: `us-central`).
+- `vertex_ai_region`: Vertex AI region (default: `us-central1`).
+- `alloydb_psa_subnet`: AlloyDB private service access subnet base IP address (default: `10.7.128.0/20`).
+- `alloydb_initial_user`: AlloyDB initial user (default: `postgres`).
+- `alloydb_initial_password`: AlloyDB initial password (no default, must be provided).
 
-### Providers (`providers.tf`)
+## Outputs
 
-*   **`google`:** The primary Google Cloud provider.
-*   **`google-beta`:** The Google Cloud beta provider, used for preview features.
+The following outputs will be displayed after applying the Terraform configuration:
 
-### Randomization (`main.tf`)
-
-*   **`random_shuffle.region`:** Randomly selects one region from `us-central1`, `europe-west4`, and `asia-southeast1`.
-*   **`random_shuffle.zone`:** Randomly shuffles the zones `a`, `b`, and `c`.
-
-### Tenant Module (`main.tf` and `modules/tenant`)
-
-*   **`module.tenant`:** This module is responsible for creating the VPC network, subnets, and enabling the necessary services.
-*   **`network_name`:** The name of the VPC network (e.g., `${var.resource_prefix}-vpc`).
-*   **`project_id`:** The ID of the Google Cloud project.
-*   **`region`:** The default region for resources.
-*   **`project_users`:** A list of users to be granted project owner roles.
-*   **`resource_prefix`:** A prefix used for naming resources.
-*   **`services`:** A list of Google Cloud services to enable.
-*   **`subnets`:** A list of subnet configurations, including name, IP range, region, and private access settings.
-
-### Outputs (`output.tf`)
-
-*   **`project_id`:** The ID of the created project.
-*   **`vpc_id`:** The ID of the created VPC network.
-*   **`vpc_network_name`:** The name of the created VPC network.
-*   **`vpc_subnet_ips`:** The IP ranges of the created subnets.
-*   **`project_users`:** The list of project users.
-*   **`region`:** The default region.
-*   **`resource_prefix`:** The resource prefix.
-*   **`random_region`:** The randomly selected region.
-*   **`random_zone`:** The randomly selected zone.
-*   **`random_zone_list`:** The list of randomly shuffled zones.
-
-### IAM (`iam.tf`)
-
-*   **`google_project_iam_binding.project_owners`:** Grants the `roles/owner` role to the users specified in the `project_users` variable.
-
-### Variables (`../deprecated-terrable/variables.tf`)
-
-*   **`project_id`:** The ID of the Google Cloud project.
-*   **`region`:** The default region for resources (defaults to `europe-west4`).
-*   **`billing_account`:** The billing account ID.
-*   **`project_owners`:** A set of usernames to be granted the project owner role (defaults to an empty set).
-*   **`resource_id`:** The default ID for shared resources (defaults to `ai-takeoff`).
+- `project_id`: The VPC project ID.
+- `vpc_id`: The VPC network ID.
+- `vpc_network_name`: The VPC network name.
+- `vpc_subnet_ips`: The VPC subnet IPs.
+- `project_users`: The list of project users.
+- `region`: The configured region.
+- `resource_prefix`: The configured resource prefix.
+- `random_region`: A randomly selected region.
+- `random_zone`: A randomly selected zone.
+- `random_zone_list`: A list of randomly selected zones.
+- `bq_region`: The configured BigQuery region.
+- `vertex_ai_region`: The configured Vertex AI region.
+- `alloydb_psa_subnet`: The configured AlloyDB PSA subnet.
+- `alloydb_initial_user`: The configured AlloyDB initial user.
+- `alloydb_initial_password`: The configured AlloyDB initial password.
 
 ## Usage
 
