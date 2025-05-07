@@ -11,7 +11,7 @@ LOG_FILE="${SCRIPT_DIR}/terraform_teardown_${TIMESTAMP}.log"
 
 # Function to log messages
 log_message() {
-    echo "$(date +'%Y-%m-%d %H:%M:%S'): $1" >>"${LOG_FILE}"
+    echo "$(date +'%Y-%m-%d %H:%M:%S'): $1" 2>&1 | tee -a "${LOG_FILE}"
 }
 
 echo "This will destroy all resources under the project."
@@ -38,7 +38,7 @@ for module_dir in "${modules[@]}"; do
     # Check if a file was found
     first_tfvars_file=$(find . -maxdepth 1 -name "*.tfvars" -print | head -z -n 1)
     if [ -n "${first_tfvars_file}" ]; then
-        log_message "Provisioning using variable file ${first_tfvars_file}"
+        log_message "Using using variable file ${first_tfvars_file}"
         VAR_FILE="-var-file=${first_tfvars_file}"
     else
         VAR_FILE=""

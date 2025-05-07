@@ -11,7 +11,7 @@ LOG_FILE="${SCRIPT_DIR}/terraform_provision_${TIMESTAMP}.log"
 
 # Function to log messages
 log_message() {
-  echo "$(date +'%Y-%m-%d %H:%M:%S'): $1" >>"${LOG_FILE}"
+  echo "$(date +'%Y-%m-%d %H:%M:%S'): $1" 2>&1 | tee -a "${LOG_FILE}"
 }
 
 # the other modules can proceed in parallel.
