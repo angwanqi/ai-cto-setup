@@ -1,8 +1,5 @@
 #!/usr/bin/env bash
 
-# change this
-VAR_FILE=argolis.tfvars
-
 ## you should not have to change anything from this point...
 SCRIPT_DIR=$(pwd)
 TIMESTAMP=$(date +%Y%m%d_%H%M%S)
@@ -17,7 +14,14 @@ log_message() {
     echo "$(date +'%Y-%m-%d %H:%M:%S'): $1" >>"${LOG_FILE}"
 }
 
-# the other modules can proceed in parallel.
+echo "This will destroy all resources under the project."
+read -p "Are you sure? (y/N) " -n 1 -r
+echo # (optional) move to a new line
+if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+    [[ "$0" = "$BASH_SOURCE" ]] && exit 1 || return 1 # handle exits from shell or function but don't exit interactive shell
+fi
+
+# destroy modules in reverse order
 declare -a modules=("06-alloydb" "05-vertex-serving" "04-vertex-training" "03-bigquery" "02-workbench" "01-base-infra")
 
 for module_dir in "${modules[@]}"; do

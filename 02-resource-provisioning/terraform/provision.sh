@@ -1,8 +1,5 @@
 #!/usr/bin/env bash
 
-# change this
-VAR_FILE=argolis.tfvars
-
 ## you should not have to change anything from this point...
 SCRIPT_DIR=$(pwd)
 TIMESTAMP=$(date +%Y%m%d_%H%M%S)
