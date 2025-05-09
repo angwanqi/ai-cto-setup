@@ -49,8 +49,13 @@ resource "google_workbench_instance" "default" {
   # instance_owners = [ tolist(local.project_users)[count.index] ]
 
   gce_setup {
-    machine_type      = "e2-standard-8"
+    machine_type      = "g2-standard-8"
     disable_public_ip = true
+
+    accelerator_configs {
+      core_count = "1"
+      type       = "NVIDIA_L4"
+    }
 
     boot_disk {
       disk_size_gb = "150"
@@ -60,7 +65,6 @@ resource "google_workbench_instance" "default" {
       disk_size_gb = "100"
       disk_type    = "PD_BALANCED"
     }
-
     shielded_instance_config {
       enable_secure_boot          = true
       enable_integrity_monitoring = true
