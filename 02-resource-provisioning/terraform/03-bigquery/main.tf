@@ -61,8 +61,8 @@ resource "google_bigquery_reservation" "reservation" {
 
 # assignment
 resource "google_bigquery_reservation_assignment" "default" {
-  project     = local.project_id
-  
+  project = local.project_id
+
   assignee    = "projects/${local.project_id}"
   job_type    = "QUERY"
   reservation = google_bigquery_reservation.reservation.id

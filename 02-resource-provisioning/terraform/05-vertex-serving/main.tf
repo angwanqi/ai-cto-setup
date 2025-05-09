@@ -22,6 +22,21 @@ locals {
   lab_services = [
     "cloudquotas.googleapis.com",
   ]
+
+  models = [
+    {
+      display_name     = "deepseek"
+      model            = "deepseek-ai/DeepSeek-R1-Distill-Llama-8B"
+      machine_type     = "a2-ultragpu-1g"
+      accelerator_type = "NVIDIA_A100_80GB"
+    },
+    {
+      display_name     = "gemma"
+      model            = "google/gemma3@gemma-3-1b-it"
+      machine_type     = "g2-standard-12"
+      accelerator_type = "NVIDIA_L4"
+    }
+  ]
 }
 
 # enable APIs
@@ -41,15 +56,16 @@ resource "google_project_service" "lab_services" {
 }
 
 # create/destroy serving endpoint
-module "cli" {
-  source  = "terraform-google-modules/gcloud/google"
-  version = "~> 3.0"
-  
+module "model_endpoints" {
+  source   = "terraform-google-modules/gcloud/google"
+  version  = "~> 3.0"
   platform = "linux"
 
+  for_each = { for model in local.models : model.display_name => model }
+
   create_cmd_entrypoint = "${path.module}/scripts/vertex-endpoint.sh"
-  create_cmd_body       = "create ${local.project_id} ${local.vertex_ai_region} ${local.resource_prefix}"
+  create_cmd_body       = "create ${local.project_id} ${local.vertex_ai_region} ${local.resource_prefix}-${each.value.display_name} ${each.value.model} ${each.value.machine_type} ${each.value.accelerator_type}"
 
   destroy_cmd_entrypoint = "${path.module}/scripts/vertex-endpoint.sh"
-  destroy_cmd_body       = "delete ${local.project_id} ${local.vertex_ai_region} ${local.resource_prefix}"
+  destroy_cmd_body       = "delete ${local.project_id} ${local.vertex_ai_region} ${local.resource_prefix}-${each.value.display_name} ${each.value.model} ${each.value.machine_type} ${each.value.accelerator_type}"
 }

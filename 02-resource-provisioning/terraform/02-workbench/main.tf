@@ -45,8 +45,9 @@ resource "google_workbench_instance" "default" {
   location = "${local.region}-${local.random_zone_list[count.index]}"
   project  = local.project_id
 
-  instance_owners = [ tolist(local.project_users)[count.index] ]
-  
+  # don't assign instance owners
+  # instance_owners = [ tolist(local.project_users)[count.index] ]
+
   gce_setup {
     machine_type      = "e2-standard-8"
     disable_public_ip = true

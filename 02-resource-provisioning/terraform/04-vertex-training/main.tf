@@ -55,7 +55,7 @@ resource "google_project_service" "lab_services" {
 module "cli" {
   source  = "terraform-google-modules/gcloud/google"
   version = "~> 3.0"
-  
+
   platform = "linux"
 
   create_cmd_entrypoint = "${path.module}/scripts/persistent-resource.sh"

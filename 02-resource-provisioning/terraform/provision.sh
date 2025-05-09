@@ -48,6 +48,8 @@ for module_dir in "${modules[@]}"; do
   terraform apply --auto-approve -no-color ${VAR_FILE} >>"${LOG_FILE}" 2>&1
   if [ $? -ne 0 ]; then
     log_message "Error: terraform apply failed in ${module_dir}. Check ${LOG_FILE} for details."
+  else
+    log_message "Successfully provisioned resources in ${module_dir}"
   fi
 
   # Navigate back to the base directory

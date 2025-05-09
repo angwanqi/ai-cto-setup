@@ -7,28 +7,26 @@
 GCLOUD_LOCATION=$(command -v gcloud)
 echo "Using gcloud from $GCLOUD_LOCATION"
 
-# change these for different model/machine/accelerator config
-MACHINE_TYPE="a2-ultragpu-1g"
-ACCELERATOR_TYPE="NVIDIA_A100_80GB"
-MODEL="deepseek-ai/DeepSeek-R1-Distill-Llama-8B"
-
 create_resource() {
+    echo "Creating ${resource_id}"
+
     # ensure we select the right quota project
     gcloud config set billing/quota_project ${project_id}
 
     # create the resource
     gcloud beta ai model-garden models deploy \
-        --model=${MODEL} \
-        --machine-type=${MACHINE_TYPE} \
-        --accelerator-type=${ACCELERATOR_TYPE} \
+        --model=${model} \
+        --machine-type=${machine_type} \
+        --accelerator-type=${accelerator_type} \
         --project=${project_id} \
         --region=${region} \
-        --endpoint-display-name=${resource_id}
+        --endpoint-display-name=${resource_id} \
+        --accept-eula
 }
 
 delete_resource() {
-    echo ${resource_id}
-    endpoint_json=$(gcloud beta ai endpoints list --list-model-garden-endpoints-only --region=${region} --project=${project_id} --format=json | jq --arg RESOURCE_ID "$resource_id" -r '.[] | select(.displayName | contains($RESOURCE_ID))')
+    echo "Destroying ${resource_id}"
+    endpoint_json=$(gcloud beta ai endpoints list --list-model-garden-endpoints-only --region=${region} --project=${project_id} --format=json | jq --arg RESOURCE_ID "${resource_id}" -r '.[] | select(.displayName | contains($RESOURCE_ID))')
     model_id=$(echo ${endpoint_json} | jq -r '.deployedModels[0].id')
     endpoint=$(echo ${endpoint_json} | jq -r '.name')
 
@@ -37,14 +35,20 @@ delete_resource() {
     # echo ${endpoint}
     # echo ${endpoint_json}
 
-    (gcloud ai endpoints undeploy-model ${endpoint} --deployed-model-id=${model_id} --region=${region} &&
-        gcloud ai endpoints delete ${endpoint} --quiet)
+    if [ -n "${endpoint}" ]; then
+        (gcloud ai endpoints undeploy-model ${endpoint} --deployed-model-id=${model_id} --region=${region} &&
+            gcloud ai endpoints delete ${endpoint} --quiet)
+    fi
 }
 
+# parameters we're expecting
 command=$1
 project_id=$2
 region=$3
 resource_id=$4
+model=$5
+machine_type=$6
+accelerator_type=$7
 
 case "${command}" in
 create)

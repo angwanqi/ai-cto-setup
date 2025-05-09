@@ -15,7 +15,7 @@ log_message() {
 }
 
 echo "This will destroy all resources under the project."
-read -p "Are you sure? (y/N) " -n 1 -r
+read -p "Are you sure (y/N) ? " -n 1 -r
 echo # (optional) move to a new line
 if [[ ! $REPLY =~ ^[Yy]$ ]]; then
     [[ "$0" = "$BASH_SOURCE" ]] && exit 1 || return 1 # handle exits from shell or function but don't exit interactive shell
@@ -47,6 +47,8 @@ for module_dir in "${modules[@]}"; do
     terraform destroy --auto-approve -no-color ${VAR_FILE} >>"${LOG_FILE}" 2>&1
     if [ $? -ne 0 ]; then
         log_message "Error: terraform destroy failed in ${module_dir}. Check ${LOG_FILE} for details."
+    else
+        log_message "Successfully destroyed resources in ${module_dir}"
     fi
 
     # Navigate back to the base directory

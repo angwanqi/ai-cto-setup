@@ -2,12 +2,14 @@ locals {
   user_list = formatlist("user:%s", var.project_users)
 
   required_roles = [
-    "roles/artifactregistry.admin",       # Artifact Registry Administrator
-    "roles/bigquery.admin",               # BigQuery Admin
-    "roles/cloudbuild.builds.builder",    # Cloud Build Service Account
-    "roles/storage.admin",                # Storage Admin
-    "roles/aiplatform.admin",             # Vertex AI administrator
-    "roles/aiplatform.featurestoreAdmin", # Vertex AI Feature Store admin
+    "roles/artifactregistry.admin",            # Artifact Registry Administrator
+    "roles/bigquery.admin",                    # BigQuery Admin
+    "roles/cloudbuild.builds.builder",         # Cloud Build Service Account
+    "roles/storage.admin",                     # Storage Admin
+    "roles/aiplatform.admin",                  # Vertex AI administrator
+    "roles/aiplatform.featurestoreAdmin",      # Vertex AI Feature Store admin
+    "roles/serviceusage.serviceUsageConsumer", # Service Usage Consumer
+    "roles/iam.serviceAccountUser",            # Service Account User
   ]
 }
 

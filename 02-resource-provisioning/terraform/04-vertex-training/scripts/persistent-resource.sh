@@ -7,7 +7,7 @@
 GCLOUD_LOCATION=$(command -v gcloud)
 echo "Using gcloud from $GCLOUD_LOCATION"
 
-RESOURCE_POOL_SPEC="replica-count=3,machine-type=a2-ultragpu-1g,accelerator-type=NVIDIA_A100_80GB,accelerator-count=1,disk-type=pd-ssd,disk-size=100"
+RESOURCE_POOL_SPEC="replica-count=3,machine-type=a2-ultragpu-1g,accelerator-type=NVIDIA_A100_80GB,accelerator-count=4,disk-type=pd-ssd,disk-size=500"
 # L4
 #	RESOURCE_POOL_SPEC="replica-count=3,machine-type=g2-standard-8,accelerator-type=NVIDIA_L4,accelerator-count=1,disk-type=pd-ssd,disk-size=100" \
 # for testing
