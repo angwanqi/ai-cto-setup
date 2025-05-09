@@ -33,6 +33,9 @@ locals {
     "ml.googleapis.com",
     "dialogflow.googleapis.com",
   ]
+
+  ## set this to true to provision persistent resources
+  provision_persistent_resources = false
 }
 
 # enable APIs
@@ -53,6 +56,8 @@ resource "google_project_service" "lab_services" {
 
 # Vertex AI persistent resource via gcloud cli
 module "cli" {
+  count = local.provision_persistent_resources ? 1 : 0
+
   source  = "terraform-google-modules/gcloud/google"
   version = "~> 3.0"
 
