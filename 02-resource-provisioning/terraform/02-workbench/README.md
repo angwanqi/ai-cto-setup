@@ -64,15 +64,3 @@ This file defines the core logic for creating the Vertex AI Workbench instances.
     terraform destroy
     ```
 
-## Outputs
-
-This module does not define any explicit outputs. However, the created Workbench instances can be accessed through the Google Cloud Console or via the `gcloud` command-line tool.
-
-## Customization
-
--   **`variables.tf`:** Uncomment and modify the variables in `variables.tf` to customize the project ID, region, resource prefix, and project users.
--   **`main.tf`:**
-    -   Modify the `count` in the `google_workbench_instance` resource to change the number of instances created.
-    -   Change the `machine_type`, `disk_size_gb`, and other `gce_setup` parameters to adjust the instance configuration.
-    - Add services to the `lab_services` list to enable them.
-
