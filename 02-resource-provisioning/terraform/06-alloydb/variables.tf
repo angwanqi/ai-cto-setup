@@ -1,4 +1,4 @@
-# # Lab specific variables
+# Lab specific variables
 
 # # AlloyDB
 # variable "alloydb_psa_subnet" {
@@ -16,4 +16,16 @@
 # variable "alloydb_initial_password" {
 #   type        = string
 #   description = "AlloyDB initial password"
+# }
+
+variable "enable_readpool" {
+  type        = bool
+  description = "Whether to enable read pool (default: false)"
+  default     = false # set to true to enable read pool
+}
+
+# variable "secondary_region" {
+#   type        = string
+#   description = "Region for secondary cluster"
+#   default     = "us-central1"
 # }

@@ -152,10 +152,10 @@ resource "google_alloydb_instance" "alloydb_instance" {
 
   provider    = google-beta
   cluster     = google_alloydb_cluster.alloydb_cluster[count.index].name
-  instance_id = "${local.resource_prefix}-alloydb-cluster-primary-${count.index + 1}" # Replace with your desired instance ID
+  instance_id = "${local.resource_prefix}-alloydb-cluster-${count.index + 1}-primary" # Replace with your desired instance ID
 
-  instance_type     = "PRIMARY" # Other types are: READ_POOL
-  availability_type = "ZONAL"   # Available options: REGIONAL, ZONAL
+  instance_type     = "PRIMARY"  # Other types are: READ_POOL
+  availability_type = "REGIONAL" # Available options: REGIONAL, ZONAL
 
   # database_flags = {
   #   "password.enforce_complexity"                         = "on" # required for public IP access
@@ -184,13 +184,54 @@ resource "google_alloydb_instance" "alloydb_instance" {
   ]
 }
 
+# Secondary cluster for HA
+# resource "google_alloydb_cluster" "secondary" {
+#   count = 3
+
+#   provider     = google-beta # alloydb_cluster requires the beta provider
+#   project      = local.project_id
+#   location     = var.secondary_region
+#   cluster_id   = "${local.resource_prefix}-alloydb-cluster-${count.index + 1}-secondary"
+#   cluster_type = "SECONDARY"
+
+#   deletion_policy = "FORCE"
+
+#   network_config {
+#     network = local.vpc_network_name
+#   }
+
+#   continuous_backup_config {
+#     enabled = false
+#   }
+
+#   secondary_config {
+#     primary_cluster_name = google_alloydb_cluster.alloydb_cluster[count.index].name
+#   }
+
+#   depends_on = [google_alloydb_instance.alloydb_instance]
+# }
+
+# resource "google_alloydb_instance" "secondary" {
+#   count = 3
+
+#   cluster     = google_alloydb_cluster.alloydb_cluster[count.index].name
+#   instance_id   = "${local.resource_prefix}-alloydb-cluster-${count.index + 1}-secondary" # Replace with your desired instance ID
+#   instance_type = "SECONDARY"
+
+#   machine_config {
+#     cpu_count = 4 # min 2 CPU TODO: 8 vCPU
+#   }
+
+#   depends_on = [google_service_networking_connection.alloydb_vpc_connection]
+# }
+
 # Create alloydb instance read pool
 resource "google_alloydb_instance" "alloydb_readpool" {
-  count = 3
+  count = var.enable_readpool ? 3 : 0
 
   provider    = google-beta
   cluster     = google_alloydb_cluster.alloydb_cluster[count.index].name
-  instance_id = "${local.resource_prefix}-alloydb-cluster-readpool-${count.index + 1}" # Replace with your desired instance ID
+  instance_id = "${local.resource_prefix}-alloydb-cluster-${count.index + 1}-readpool" # Replace with your desired instance ID
 
   instance_type     = "READ_POOL" # Other types are: READ_POOL
   availability_type = "ZONAL"     # Available options: REGIONAL, ZONAL
