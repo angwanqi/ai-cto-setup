@@ -219,7 +219,7 @@ resource "google_alloydb_instance" "alloydb_instance" {
 #   instance_type = "SECONDARY"
 
 #   machine_config {
-#     cpu_count = 4 # min 2 CPU TODO: 8 vCPU
+#     cpu_count = 8 # min 2 CPU
 #   }
 
 #   depends_on = [google_service_networking_connection.alloydb_vpc_connection]
@@ -241,7 +241,7 @@ resource "google_alloydb_instance" "alloydb_readpool" {
   }
 
   machine_config {
-    cpu_count = 4 # min 2 CPU TODO: 8 vCPU
+    cpu_count = 8 # min 2 CPU
   }
 
   depends_on = [
