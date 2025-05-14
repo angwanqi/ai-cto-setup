@@ -10,6 +10,7 @@ locals {
     "roles/aiplatform.featurestoreAdmin",      # Vertex AI Feature Store admin
     "roles/serviceusage.serviceUsageConsumer", # Service Usage Consumer
     "roles/iam.serviceAccountUser",            # Service Account User
+    "roles/secretmanager.secretAccessor",      # Secrets Manager Secret Accessor
   ]
 }
 

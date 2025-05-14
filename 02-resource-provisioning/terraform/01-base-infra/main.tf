@@ -37,6 +37,10 @@ module "tenant" {
     "storage.googleapis.com",
     "discoveryengine.googleapis.com",
     "cloudbilling.googleapis.com",
+    "run.googleapis.com",
+    "cloudbuild.googleapis.com",
+    "secretmanager.googleapis.com",
+    "artifactregistry.googleapis.com",
   ]
 
   subnets = [
