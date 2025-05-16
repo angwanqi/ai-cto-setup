@@ -25,8 +25,8 @@ locals {
 
   models = [
     {
-      display_name     = "deepseek"
-      model            = "deepseek-ai/DeepSeek-R1-Distill-Llama-8B"
+      display_name     = "stablediffusion"
+      model            = "stability-ai/stable-diffusion-xl-base@stable-diffusion-xl-base-1.0"
       machine_type     = "a2-ultragpu-1g"
       accelerator_type = "NVIDIA_A100_80GB"
     },

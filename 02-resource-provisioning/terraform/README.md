@@ -29,7 +29,11 @@ The `terraform/` directory is organized as follows:
 
 *   Terraform installed
 *   Google Cloud SDK installed and configured
+*   `jq` installed to parse JSON output from `gcloud` commands
 *   Appropriate permissions to create and manage resources in your Google Cloud project
+
+Not required, but recommended
+*   `tmux` or `screen` when working with remote sessions.
 
 ### Provisioning Resources
 

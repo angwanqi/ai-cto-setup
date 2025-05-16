@@ -13,6 +13,9 @@ create_resource() {
     # ensure we select the right quota project
     gcloud config set billing/quota_project ${project_id}
 
+    # *not sure if this is necessary, but will pause to allow config change above to sync
+    sleep 10
+
     # create the resource
     gcloud beta ai model-garden models deploy \
         --model=${model} \

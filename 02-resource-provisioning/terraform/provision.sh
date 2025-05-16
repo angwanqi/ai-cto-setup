@@ -14,6 +14,13 @@ log_message() {
   echo "$(date +'%Y-%m-%d %H:%M:%S'): $1" 2>&1 | tee -a "${LOG_FILE}"
 }
 
+echo "This will provision resources for the project."
+read -p "Are you sure (y/N) ? " -n 1 -r
+echo # move to a new line
+if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+  [[ "$0" = "$BASH_SOURCE" ]] && exit 1 || return 1 # handle exits from shell or function but don't exit interactive shell
+fi
+
 # the other modules can proceed in parallel.
 declare -a modules=("01-base-infra" "02-workbench" "03-bigquery" "04-vertex-training" "05-vertex-serving" "06-alloydb")
 
