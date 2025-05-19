@@ -78,3 +78,14 @@ resource "google_service_account_iam_binding" "admin-account-iam" {
 
   members = local.user_list
 }
+
+resource "google_org_policy_policy" "allow_external_ip" {
+  name   = "projects/${var.project_id}/policies/compute.vmExternalIpAccess"
+  parent = "projects/${var.project_id}"
+
+  spec {
+    rules {
+      allow_all = "TRUE"
+    }
+  }
+}

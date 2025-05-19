@@ -31,6 +31,8 @@ The `terraform/` directory is organized as follows:
 *   Google Cloud SDK installed and configured
 *   `jq` installed to parse JSON output from `gcloud` commands
 *   Appropriate permissions to create and manage resources in your Google Cloud project
+*   Authenticate to Google Cloud using `gcloud auth login` to ensure proper credentials are used by Terraform.
+*   Set the quota project using `gcloud auth application-default set-quota-project YOUR_PROJECT_ID`
 
 Not required, but recommended
 *   `tmux` or `screen` when working with remote sessions.

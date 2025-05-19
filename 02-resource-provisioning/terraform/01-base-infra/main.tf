@@ -21,6 +21,7 @@ module "tenant" {
 
   services = [
     "iam.googleapis.com",
+    "orgpolicy.googleapis.com",
     "compute.googleapis.com",
     "servicenetworking.googleapis.com",
     "notebooks.googleapis.com",

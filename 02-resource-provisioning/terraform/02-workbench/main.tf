@@ -50,7 +50,7 @@ resource "google_workbench_instance" "default" {
 
   gce_setup {
     machine_type      = "g2-standard-8"
-    disable_public_ip = true
+    disable_public_ip = false
 
     accelerator_configs {
       core_count = "1"
@@ -61,10 +61,12 @@ resource "google_workbench_instance" "default" {
       disk_size_gb = "150"
       disk_type    = "PD_BALANCED"
     }
+
     data_disks {
       disk_size_gb = "100"
       disk_type    = "PD_BALANCED"
     }
+
     shielded_instance_config {
       enable_secure_boot          = true
       enable_integrity_monitoring = true
