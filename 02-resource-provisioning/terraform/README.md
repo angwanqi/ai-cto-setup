@@ -9,19 +9,14 @@ The `terraform/` directory is organized as follows:
 *   **`modules/`**: This directory contains reusable Terraform modules. Each module encapsulates a specific piece of infrastructure, making it easy to reuse and manage.
     *   **`bqlab/`**: Contains the Terraform module for setting up BigQuery resources.
     *   **`tenant/`**: Contains the Terraform module for setting up tenant-specific resources.
-        *   **`alloy-db/`**: Contains the Terraform module for setting up AlloyDB clusters and instances.
-        *   **`firewall-rules/`**: Contains the Terraform module for setting up firewall rules.
-        *   **`routes/`**: Contains the Terraform module for setting up routes.
-        *   **`subnets/`**: Contains the Terraform module for setting up subnets.
-        *   **`vpc/`**: Contains the Terraform module for setting up VPC networks.
-*   **`provision.sh`**: A script to provision the resources defined in the Terraform configurations.
-*   **`tear-down.sh`**: A script to destroy the resources provisioned by the Terraform configurations.
 *   **`01-base-infra`**: Contains the base infrastructure configurations.
 *   **`02-workbench`**: Contains the Vertex AI Workbench and related configurations.
 *   **`03-bigquery`**: Contains the BigQuery and related configurations.
 *   **`04-vertex-training`**: Contains the Vertex AI Training and related configurations.
 *   **`05-vertex-serving`**: Contains the Vertex AI Prediction and related configurations.
 *   **`06-alloydb`**: Contains the AlloyDB and related configurations.
+*   **`provision.sh`**: A script to provision the resources defined in the Terraform configurations.
+*   **`tear-down.sh`**: A script to destroy the resources provisioned by the Terraform configurations.
 
 ## Usage
 
