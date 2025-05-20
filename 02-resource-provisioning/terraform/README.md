@@ -23,6 +23,7 @@ The `terraform/` directory is organized as follows:
 ### Prerequisites
 
 *   Terraform installed
+*   Bash or compatible shell
 *   Google Cloud SDK installed and configured
 *   `jq` installed to parse JSON output from `gcloud` commands
 *   Appropriate permissions to create and manage resources in your Google Cloud project
