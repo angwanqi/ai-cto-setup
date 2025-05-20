@@ -19,7 +19,7 @@ REGIONS=("asia-southeast1")
 
 # Loop through all projects
 # TODO: Ensure that you have filled up projects.txt with all your project IDs
-for proj in $(cat projects.txt); do
+for proj in $(cat ../projects.txt); do
   PROJECT_ID="$proj"
   BILLING_PROJECT_ID="$PROJECT_ID"
 
@@ -29,7 +29,7 @@ for proj in $(cat projects.txt); do
   for REGION in "${REGIONS[@]}"; do
 
     # PREFERENCE_ID for Training
-    PREFERENCE_ID="a100-80gb-training-v2-${PROJECT_ID}-${REGION}"
+    PREFERENCE_ID="a100-80gb-training-${PROJECT_ID}-${REGION}"
 
     # Run the gcloud command and capture the output
     output=$(gcloud beta quotas preferences describe "$PREFERENCE_ID" --project="$PROJECT_ID" --billing-project="$BILLING_PROJECT_ID" --format=json 2>/dev/null)
