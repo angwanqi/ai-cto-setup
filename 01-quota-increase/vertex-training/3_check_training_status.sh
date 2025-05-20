@@ -27,7 +27,7 @@ for proj in $(cat ../projects.txt); do
     echo "Processing project: $PROJECT_ID for $REGION."
 
     # PREFERENCE_ID for Training
-    PREFERENCE_ID="a100-80gb-training-v2-${PROJECT_ID}-${REGION}"
+    PREFERENCE_ID="a100-80gb-training-${PROJECT_ID}-${REGION}"
 
     # Run the gcloud command and capture the output
     output=$(gcloud beta quotas preferences describe "$PREFERENCE_ID" --project="$PROJECT_ID" --billing-project="$BILLING_PROJECT_ID" --format=json 2>/dev/null)
