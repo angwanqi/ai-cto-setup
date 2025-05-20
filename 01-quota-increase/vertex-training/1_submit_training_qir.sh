@@ -25,10 +25,10 @@ for proj in $(cat ../projects.txt); do
     PREFERRED_VALUE=8
     DIMENSIONS="region=$REGION"
     JUSTIFICATION="Requesting A100 80GB GPU quota for Gemma 3 finetuning."
-    EMAIL="<UPDATE_EMAIL>" # TODO: Input your email
-    PREFERENCE_ID="a100-80gb-training-v2-$PROJECT_ID-$REGION"
+    EMAIL="<REPLACE_EMAIL>" # TODO: Input your email
+    PREFERENCE_ID="a100-80gb-training-$PROJECT_ID-$REGION"
 
-    output=$(gcloud beta quotas preferences create \
+    output=$(gcloud beta quotas preferences update "$PREFERENCE_ID"  \
         --preferred-value="$PREFERRED_VALUE" \
         --quota-id="$QUOTA_ID" \
         --service="$SERVICE_NAME" \
@@ -37,7 +37,6 @@ for proj in $(cat ../projects.txt); do
         --billing-project="$PROJECT_ID" \
         --justification="$JUSTIFICATION" \
         --email="$EMAIL" \
-        --preference-id="$PREFERENCE_ID" \
         --format="json" 2>&1)
 
     exit_code=$?
