@@ -14,4 +14,5 @@ bq_region = ""   # possible values are "us-central1" and "us"
 vertex_ai_region = "<VERTEX_AI_REGION : eg. us-central1>" # possible values are "asia-southeast1", "us-central1" and "europe-west4"
 
 # AlloyDB password
-alloydb_initial_password = "" # set an initial password for alloydb
+alloydb_initial_password = "" # set an initial password for alloydb (e.g. Ai-T@ke0ff-2025)
+
