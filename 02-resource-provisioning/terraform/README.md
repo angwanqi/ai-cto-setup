@@ -7,7 +7,6 @@ This directory contains Terraform configurations and scripts for provisioning cl
 The `terraform/` directory is organized as follows:
 
 *   **`modules/`**: This directory contains reusable Terraform modules. Each module encapsulates a specific piece of infrastructure, making it easy to reuse and manage.
-    *   **`bqlab/`**: Contains the Terraform module for setting up BigQuery resources.
     *   **`tenant/`**: Contains the Terraform module for setting up tenant-specific resources.
 *   **`01-base-infra`**: Contains the base infrastructure configurations.
 *   **`02-workbench`**: Contains the Vertex AI Workbench and related configurations.
