@@ -50,12 +50,12 @@ resource "google_bigquery_reservation" "reservation" {
 
   // Set to 0 for testing purposes
   // In reality this would be larger than zero
-  slot_capacity     = 150
+  slot_capacity     = 200
   edition           = "ENTERPRISE"
   ignore_idle_slots = true
   concurrency       = 0
   autoscale {
-    max_slots = 150
+    max_slots = 200
   }
 }
 
