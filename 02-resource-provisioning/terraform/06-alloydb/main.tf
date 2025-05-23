@@ -176,7 +176,7 @@ resource "google_alloydb_instance" "alloydb_instance" {
 
 
   machine_config {
-    cpu_count = 4 # min 2 CPU TODO: 8 vCPU
+    cpu_count = 8 # min 2 CPU TODO: 8 vCPU
   }
 
   depends_on = [
