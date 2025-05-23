@@ -42,6 +42,8 @@ module "tenant" {
     "cloudbuild.googleapis.com",
     "secretmanager.googleapis.com",
     "artifactregistry.googleapis.com",
+    "monitoring.googleapis.com",
+    "cloudtrace.googleapis.com",
   ]
 
   subnets = [
