@@ -48,6 +48,8 @@ module "vpc" {
 
   routes         = var.routes
   firewall_rules = var.firewall_rules
+
+  depends_on = [google_project_service.services]
 }
 
 # allow iap so we can access the compute instances

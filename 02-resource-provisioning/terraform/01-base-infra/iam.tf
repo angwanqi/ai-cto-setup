@@ -53,13 +53,13 @@ resource "google_project_iam_binding" "project_users" {
 }
 
 # bind some built-in roles to users
-resource "google_project_iam_binding" "project_user_required_roles" {
-  for_each = toset(local.required_roles)
+# resource "google_project_iam_binding" "project_user_required_roles" {
+#   for_each = toset(local.required_roles)
 
-  project = var.project_id
-  role    = each.value
-  members = local.user_list
-}
+#   project = var.project_id
+#   role    = each.value
+#   members = local.user_list
+# }
 
 # bind roles to default compute service account
 resource "google_project_iam_binding" "compute_engine_required_roles" {
