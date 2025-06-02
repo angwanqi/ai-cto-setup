@@ -55,7 +55,7 @@ resource "google_bigquery_reservation" "reservation" {
   ignore_idle_slots = true
   concurrency       = 0
   autoscale {
-    max_slots = 200
+    max_slots = 0
   }
 }
 
