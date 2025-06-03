@@ -1,7 +1,7 @@
 locals {
   user_list = formatlist("user:%s", var.project_users)
 
-  required_roles = [
+  compute_engine_roles = [
     "roles/artifactregistry.admin",            # Artifact Registry Administrator
     "roles/bigquery.admin",                    # BigQuery Admin
     "roles/cloudbuild.builds.builder",         # Cloud Build Service Account
@@ -11,6 +11,11 @@ locals {
     "roles/serviceusage.serviceUsageConsumer", # Service Usage Consumer
     "roles/iam.serviceAccountUser",            # Service Account User
     "roles/secretmanager.secretAccessor",      # Secrets Manager Secret Accessor
+  ]
+
+  project_user_roles = [
+    "roles/resourcemanager.projectIamAdmin", # Project IAM Admin
+    "roles/secretmanager.secretAccessor",    # Secrets Manager Secret Accessor
   ]
 }
 
@@ -53,17 +58,17 @@ resource "google_project_iam_binding" "project_users" {
 }
 
 # bind some built-in roles to users
-# resource "google_project_iam_binding" "project_user_required_roles" {
-#   for_each = toset(local.required_roles)
+resource "google_project_iam_binding" "project_user_required_roles" {
+  for_each = toset(local.project_user_roles)
 
-#   project = var.project_id
-#   role    = each.value
-#   members = local.user_list
-# }
+  project = var.project_id
+  role    = each.value
+  members = local.user_list
+}
 
 # bind roles to default compute service account
 resource "google_project_iam_binding" "compute_engine_required_roles" {
-  for_each = toset(local.required_roles)
+  for_each = toset(local.compute_engine_roles)
   project  = var.project_id
   role     = each.value
   members = [
@@ -71,7 +76,7 @@ resource "google_project_iam_binding" "compute_engine_required_roles" {
   ]
 }
 
-# 
+# allow project users to use default compute engine service account
 resource "google_service_account_iam_binding" "admin-account-iam" {
   service_account_id = data.google_compute_default_service_account.default.name
   role               = "roles/iam.serviceAccountUser"
