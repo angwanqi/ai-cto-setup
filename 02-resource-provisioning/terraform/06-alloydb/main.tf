@@ -173,8 +173,6 @@ resource "google_alloydb_instance" "alloydb_instance" {
     enable_public_ip          = false
   }
 
-
-
   machine_config {
     cpu_count = 8 # min 2 CPU TODO: 8 vCPU
   }
@@ -183,47 +181,6 @@ resource "google_alloydb_instance" "alloydb_instance" {
     google_service_networking_connection.alloydb_vpc_connection
   ]
 }
-
-# Secondary cluster for HA
-# resource "google_alloydb_cluster" "secondary" {
-#   count = 3
-
-#   provider     = google-beta # alloydb_cluster requires the beta provider
-#   project      = local.project_id
-#   location     = var.secondary_region
-#   cluster_id   = "${local.resource_prefix}-alloydb-cluster-${count.index + 1}-secondary"
-#   cluster_type = "SECONDARY"
-
-#   deletion_policy = "FORCE"
-
-#   network_config {
-#     network = local.vpc_network_name
-#   }
-
-#   continuous_backup_config {
-#     enabled = false
-#   }
-
-#   secondary_config {
-#     primary_cluster_name = google_alloydb_cluster.alloydb_cluster[count.index].name
-#   }
-
-#   depends_on = [google_alloydb_instance.alloydb_instance]
-# }
-
-# resource "google_alloydb_instance" "secondary" {
-#   count = 3
-
-#   cluster     = google_alloydb_cluster.alloydb_cluster[count.index].name
-#   instance_id   = "${local.resource_prefix}-alloydb-cluster-${count.index + 1}-secondary" # Replace with your desired instance ID
-#   instance_type = "SECONDARY"
-
-#   machine_config {
-#     cpu_count = 8 # min 2 CPU
-#   }
-
-#   depends_on = [google_service_networking_connection.alloydb_vpc_connection]
-# }
 
 # Create alloydb instance read pool
 resource "google_alloydb_instance" "alloydb_readpool" {
@@ -270,7 +227,7 @@ resource "google_compute_firewall" "alloydb_allow_internal" {
 
 # Allow project users to access AlloyDB instance using IAM credentials
 resource "google_alloydb_user" "alloydb_user" {
-  count = 3
+  count = var.enable_iam_user ? 3 : 0
 
   cluster   = google_alloydb_cluster.alloydb_cluster[count.index].name
   user_id   = tolist(local.project_users)[count.index]

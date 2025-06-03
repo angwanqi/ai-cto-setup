@@ -24,8 +24,8 @@ variable "enable_readpool" {
   default     = false # set to true to enable read pool
 }
 
-# variable "secondary_region" {
-#   type        = string
-#   description = "Region for secondary cluster"
-#   default     = "us-central1"
-# }
+variable "enable_iam_user" {
+  type        = bool
+  description = "Allow user to login to AlloyDB using IAM credentials"
+  default     = false
+}

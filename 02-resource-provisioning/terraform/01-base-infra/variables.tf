@@ -21,6 +21,12 @@ variable "project_users" {
   default     = [] # Set an empty set as default
 }
 
+variable "override_external_ip_policy" {
+  type        = bool
+  description = "Override policy to allow external ip for project"
+  default     = false
+}
+
 ## lab specific variables ########################################################################
 
 # BigQuery ######

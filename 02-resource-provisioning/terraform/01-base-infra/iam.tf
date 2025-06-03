@@ -85,6 +85,8 @@ resource "google_service_account_iam_binding" "admin-account-iam" {
 }
 
 resource "google_org_policy_policy" "allow_external_ip" {
+  count = var.override_external_ip_policy ? 1 : 0
+
   name   = "projects/${var.project_id}/policies/compute.vmExternalIpAccess"
   parent = "projects/${var.project_id}"
 
