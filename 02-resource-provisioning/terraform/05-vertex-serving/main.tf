@@ -29,12 +29,14 @@ locals {
       model            = "stability-ai/stable-diffusion-xl-base@stable-diffusion-xl-base-1.0"
       machine_type     = "a2-ultragpu-1g"
       accelerator_type = "NVIDIA_A100_80GB"
+      region           = "asia-southeast1"
     },
     {
       display_name     = "gemma"
       model            = "google/gemma3@gemma-3-1b-it"
-      machine_type     = "g2-standard-12"
-      accelerator_type = "NVIDIA_L4"
+      machine_type     = "a3-highgpu-1g"
+      accelerator_type = "NVIDIA_H100_80GB"
+      region           = "us-central1"
     }
   ]
 }
@@ -64,8 +66,8 @@ module "model_endpoints" {
   for_each = { for model in local.models : model.display_name => model }
 
   create_cmd_entrypoint = "${path.module}/scripts/vertex-endpoint.sh"
-  create_cmd_body       = "create ${local.project_id} ${local.vertex_ai_region} ${local.resource_prefix}-${each.value.display_name} ${each.value.model} ${each.value.machine_type} ${each.value.accelerator_type}"
+  create_cmd_body       = "create ${local.project_id} ${each.value.region} ${local.resource_prefix}-${each.value.display_name} ${each.value.model} ${each.value.machine_type} ${each.value.accelerator_type}"
 
   destroy_cmd_entrypoint = "${path.module}/scripts/vertex-endpoint.sh"
-  destroy_cmd_body       = "delete ${local.project_id} ${local.vertex_ai_region} ${local.resource_prefix}-${each.value.display_name} ${each.value.model} ${each.value.machine_type} ${each.value.accelerator_type}"
+  destroy_cmd_body       = "delete ${local.project_id} ${each.value.region} ${local.resource_prefix}-${each.value.display_name} ${each.value.model} ${each.value.machine_type} ${each.value.accelerator_type}"
 }
