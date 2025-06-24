@@ -22,7 +22,7 @@ for proj in $(cat projects.txt); do
     echo "Requesting quota increase for project: $PROJECT_ID, region: $REGION, quota: $QUOTA_ID"
 
     SERVICE_NAME="aiplatform.googleapis.com"
-    PREFERRED_VALUE=6
+    PREFERRED_VALUE=8
     DIMENSIONS="region=$REGION"
     JUSTIFICATION="Requesting A100 80GB GPU quota for OSS LLM test."
     EMAIL="<UPDATE_EMAIL>" # TODO: Input your email

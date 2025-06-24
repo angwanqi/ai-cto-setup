@@ -15,21 +15,21 @@
 # service: aiplatform.googleapis.com
 # updateTime: '2025-02-10T12:32:07.460787652Z'
 
-REGIONS=("asia-southeast1")
+REGIONS=("us-central1" "asia-southeast1")
 
 # Loop through all projects
 # TODO: Ensure that you have filled up projects.txt with all your project IDs
 for proj in $(cat ../projects.txt); do
   PROJECT_ID="$proj"
-  BILLING_PROJECT_ID="$PROJECT_ID"
+  BILLING_PROJECT_ID="$PROJECT_ID" # Or your separate billing project ID
 
   echo "Processing project: $PROJECT_ID"
 
   # Construct the resource name dynamically
   for REGION in "${REGIONS[@]}"; do
 
-    # PREFERENCE_ID for Training
-    PREFERENCE_ID="a100-80gb-training-${PROJECT_ID}-${REGION}"
+    # PREFERENCE_ID for Serving
+    PREFERENCE_ID="cloudrun-l4-$PROJECT_ID-$REGION"
 
     # Run the gcloud command and capture the output
     output=$(gcloud beta quotas preferences describe "$PREFERENCE_ID" --project="$PROJECT_ID" --billing-project="$BILLING_PROJECT_ID" --format=json 2>/dev/null)
@@ -40,8 +40,15 @@ for proj in $(cat ../projects.txt); do
     quota_id=$(jq -r '.quotaId' <<< "$output")
     trace_id=$(jq -r '.quotaConfig.traceId' <<< "$output")
 
+    # # Print the extracted values
+    # echo "region: $region"
+    # echo "name: $name"
+    # echo "preferred_value: $preferred_value"
+    # echo "quota_id: $quota_id"
+    # echo "trace_id: $trace_id"
+
     # Set the output CSV file name
-    csv_file="vertex_quota_traceids.csv"
+    csv_file="cloudrun_qir_traceids.csv"
 
     # Check if the CSV file exists. If not, create it with headers
     if [ ! -f "$csv_file" ]; then
