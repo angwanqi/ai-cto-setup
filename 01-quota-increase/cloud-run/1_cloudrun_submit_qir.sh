@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Define the regions you want to loop through
-REGIONS=("us-central1" "asia-southeast1") # Add more regions as needed
+REGIONS=("asia-southeast1") # Add more regions as needed
 
 # Loop through all projects
 # TODO: Ensure that you have filled up projects.txt with all your project IDs
