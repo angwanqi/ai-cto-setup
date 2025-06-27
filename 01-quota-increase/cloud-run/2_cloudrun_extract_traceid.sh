@@ -15,7 +15,7 @@
 # service: aiplatform.googleapis.com
 # updateTime: '2025-02-10T12:32:07.460787652Z'
 
-REGIONS=("us-central1" "asia-southeast1")
+REGIONS=("asia-southeast1")
 
 # Loop through all projects
 # TODO: Ensure that you have filled up projects.txt with all your project IDs
