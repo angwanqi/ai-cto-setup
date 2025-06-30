@@ -68,7 +68,7 @@ resource "google_workbench_instance" "default" {
     }
 
     shielded_instance_config {
-      enable_secure_boot          = false
+      enable_secure_boot          = true
       enable_integrity_monitoring = true
       enable_vtpm                 = true
     }
